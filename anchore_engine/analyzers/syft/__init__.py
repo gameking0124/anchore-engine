@@ -1,12 +1,23 @@
 import collections
 
-from anchore_engine.analyzers.utils import defaultdict_to_dict, content_hints
+from anchore_engine.analyzers.utils import defaultdict_to_dict, content_hints, dig
 from anchore_engine.clients.syft_wrapper import run_syft
 from .handlers import modules_by_artifact_type, modules_by_engine_type
 
 
 def filter_artifacts(artifact):
-    return artifact["type"] in modules_by_artifact_type
+    # syft may do more work than what is supported in engine, ensure we only include artifacts
+    # of select package types.
+    is_supported_type = artifact["type"] in modules_by_artifact_type
+
+    # some packages are owned by other packages (e.g. a python package that was installed
+    # from an RPM instead of with pip), we only want to consider packages that are NOT
+    # owned by other packages.
+    is_root_package = not dig(
+        artifact, "relations", "parentsByFileOwnership", force_default=[]
+    )
+
+    return is_supported_type and is_root_package
 
 
 def catalog_image(imagedir):

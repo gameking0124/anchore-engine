@@ -2372,13 +2372,25 @@ definitions:
         type: array
       purl:
         type: string
+      relations:
+        "$ref": "#/definitions/ImportPackageRelations"
       metadataType:
         type: string
       metadata:
         type: object
     additionalProperties: false
     type: object
-
+  ImportPackageRelations:
+    required:
+      - parentsByFileOwnership
+    properties:
+      parentsByFileOwnership:
+        items:
+          type: string
+        type: array
+    additionalProperties: false
+    x-nullable: True
+    type: object
   ImportSchema:
     required:
       - version

@@ -2347,6 +2347,8 @@ definitions:
       - cpes
       - metadataType
     properties:
+      id:
+        type: string
       name:
         type: string
       version:

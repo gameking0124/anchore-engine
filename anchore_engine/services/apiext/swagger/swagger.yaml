@@ -4998,6 +4998,10 @@ definitions:
         "$ref": "#/definitions/ImportDescriptor"
       schema:
         "$ref": "#/definitions/ImportSchema"
+      artifactRelationships:
+        items:
+          "$ref": "#/definitions/ImportPackageRelationships"
+        type: array
     additionalProperties: true
     type: object
   ImportDescriptor:
@@ -5112,5 +5116,22 @@ definitions:
         type: string
       target:
         additionalProperties: true
+    additionalProperties: false
+    type: object
+  ImportPackageRelationships:
+    required:
+      - parent
+      - child
+      - type
+    properties:
+      parent:
+        type: string
+      child:
+        type: string
+      type:
+        type: string
+      metadata:
+        additionalProperties: true
+        type: object
     additionalProperties: false
     type: object
